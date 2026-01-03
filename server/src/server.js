@@ -2,7 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
+import multer from 'multer';
 import loadsRouter from './routes/loads.js';
+import { getUploadDir } from './config/upload.js';
 
 // Load environment variables
 dotenv.config();
@@ -15,6 +17,9 @@ app.use(helmet()); // Security headers
 app.use(cors()); // Enable CORS for frontend
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
+
+// Serve uploaded images as static files
+app.use('/uploads/group-photos', express.static(getUploadDir()));
 
 // Request logging
 app.use((req, res, next) => {
@@ -37,6 +42,22 @@ app.use((req, res) => {
 
 // Error handler
 app.use((err, req, res, next) => {
+    // Handle multer errors
+    if (err instanceof multer.MulterError) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+            return res.status(400).json({ error: 'File too large. Maximum size is 5MB.' });
+        }
+        if (err.code === 'LIMIT_UNEXPECTED_FILE') {
+            return res.status(400).json({ error: 'Too many files. Only one image allowed.' });
+        }
+        return res.status(400).json({ error: `Upload error: ${err.message}` });
+    }
+
+    // Handle file validation errors
+    if (err.message && err.message.includes('Invalid file type')) {
+        return res.status(400).json({ error: err.message });
+    }
+
     console.error('Error:', err);
     res.status(500).json({
         error: 'Internal server error',

@@ -14,13 +14,19 @@ export default function AddLoadPage() {
 
   const handleSubmit = async (data) => {
     try {
-      // Remove empty string values and convert to null
-      const cleanData = Object.fromEntries(
-        Object.entries(data).map(([key, value]) => [
-          key,
-          value === '' ? null : value,
-        ])
-      );
+      // If data is FormData (for file uploads), pass it through as-is
+      // Otherwise, clean up empty strings
+      let cleanData;
+      if (data instanceof FormData) {
+        cleanData = data;
+      } else {
+        cleanData = Object.fromEntries(
+          Object.entries(data).map(([key, value]) => [
+            key,
+            value === '' ? null : value,
+          ])
+        );
+      }
 
       if (isEditing) {
         await updateLoad.mutateAsync({ id, data: cleanData });

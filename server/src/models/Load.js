@@ -104,8 +104,11 @@ class Load {
                 primer_manufacturer, primer_type,
                 case_manufacturer, total_cartridge_length_mm, free_travel_mm,
                 velocity_ms, group_size_mm, distance_meters,
-                notes, source
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                notes, source,
+                loading_date, cartridges_loaded, group_photo_path, batch_number,
+                tested_date, temperature_celsius, humidity_percent,
+                barrel_length_inches, twist_rate, velocity_sd, velocity_es
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `);
 
         const result = stmt.run(
@@ -126,7 +129,18 @@ class Load {
             data.group_size_mm || null,
             data.distance_meters || null,
             data.notes || null,
-            data.source || 'user'
+            data.source || 'user',
+            data.loading_date || null,
+            data.cartridges_loaded || null,
+            data.group_photo_path || null,
+            data.batch_number || null,
+            data.tested_date || null,
+            data.temperature_celsius || null,
+            data.humidity_percent || null,
+            data.barrel_length_inches || null,
+            data.twist_rate || null,
+            data.velocity_sd || null,
+            data.velocity_es || null
         );
 
         return this.getById(result.lastInsertRowid);
@@ -154,7 +168,18 @@ class Load {
                 velocity_ms = ?,
                 group_size_mm = ?,
                 distance_meters = ?,
-                notes = ?
+                notes = ?,
+                loading_date = ?,
+                cartridges_loaded = ?,
+                group_photo_path = ?,
+                batch_number = ?,
+                tested_date = ?,
+                temperature_celsius = ?,
+                humidity_percent = ?,
+                barrel_length_inches = ?,
+                twist_rate = ?,
+                velocity_sd = ?,
+                velocity_es = ?
             WHERE id = ?
         `);
 
@@ -176,6 +201,17 @@ class Load {
             data.group_size_mm || null,
             data.distance_meters || null,
             data.notes || null,
+            data.loading_date || null,
+            data.cartridges_loaded || null,
+            data.group_photo_path || null,
+            data.batch_number || null,
+            data.tested_date || null,
+            data.temperature_celsius || null,
+            data.humidity_percent || null,
+            data.barrel_length_inches || null,
+            data.twist_rate || null,
+            data.velocity_sd || null,
+            data.velocity_es || null,
             id
         );
 
@@ -202,6 +238,43 @@ class Load {
             bulletManufacturers: bulletManufacturers.map(r => r.bullet_manufacturer),
             powderTypes: powderTypes.map(r => r.powder_type)
         };
+    }
+
+    /**
+     * Get preset calibers
+     */
+    static getCaliberPresets() {
+        const presets = db.prepare('SELECT name FROM caliber_presets ORDER BY name').all();
+        return presets.map(p => p.name);
+    }
+
+    /**
+     * Get preset bullet brands
+     */
+    static getBulletBrandPresets() {
+        const presets = db.prepare('SELECT name FROM bullet_brand_presets ORDER BY name').all();
+        return presets.map(p => p.name);
+    }
+
+    /**
+     * Get preset powder manufacturers
+     */
+    static getPowderManufacturerPresets() {
+        const presets = db.prepare('SELECT name FROM powder_manufacturer_presets ORDER BY name').all();
+        return presets.map(p => p.name);
+    }
+
+    /**
+     * Get preset powder types for a specific manufacturer
+     */
+    static getPowderTypePresets(manufacturer) {
+        if (!manufacturer) {
+            // Return all powder types if no manufacturer specified
+            const presets = db.prepare('SELECT DISTINCT name FROM powder_type_presets ORDER BY name').all();
+            return presets.map(p => p.name);
+        }
+        const presets = db.prepare('SELECT name FROM powder_type_presets WHERE manufacturer = ? ORDER BY name').all(manufacturer);
+        return presets.map(p => p.name);
     }
 }
 

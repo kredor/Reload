@@ -5,8 +5,13 @@ import {
     createLoad,
     updateLoad,
     deleteLoad,
-    getFilterOptions
+    getFilterOptions,
+    getCaliberPresets,
+    getBulletBrandPresets,
+    getPowderManufacturerPresets,
+    getPowderTypePresets
 } from '../controllers/loadsController.js';
+import { upload } from '../config/upload.js';
 
 const router = express.Router();
 
@@ -16,14 +21,20 @@ router.get('/', getAllLoads);
 // Get filter options for autocomplete
 router.get('/filters', getFilterOptions);
 
+// Preset endpoints
+router.get('/presets/calibers', getCaliberPresets);
+router.get('/presets/bullet-brands', getBulletBrandPresets);
+router.get('/presets/powder-manufacturers', getPowderManufacturerPresets);
+router.get('/presets/powder-types', getPowderTypePresets);
+
 // Get single load by ID
 router.get('/:id', getLoadById);
 
-// Create new load
-router.post('/', createLoad);
+// Create new load (with optional photo upload)
+router.post('/', upload.single('groupPhoto'), createLoad);
 
-// Update existing load
-router.put('/:id', updateLoad);
+// Update existing load (with optional photo upload)
+router.put('/:id', upload.single('groupPhoto'), updateLoad);
 
 // Delete load
 router.delete('/:id', deleteLoad);

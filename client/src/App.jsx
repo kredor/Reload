@@ -3,6 +3,7 @@ import Header from './components/layout/Header';
 import Navigation from './components/layout/Navigation';
 import BrowsePage from './pages/BrowsePage';
 import AddLoadPage from './pages/AddLoadPage';
+import LoadDetailPage from './pages/LoadDetailPage';
 import ImportPage from './pages/ImportPage';
 
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<BrowsePage />} />
           <Route path="/add" element={<AddLoadPage />} />
+          <Route path="/load/:id" element={<LoadDetailPage />} />
           <Route path="/edit/:id" element={<AddLoadPage />} />
           <Route path="/import" element={<ImportPage />} />
         </Routes>

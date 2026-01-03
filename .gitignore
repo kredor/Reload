@@ -18,6 +18,10 @@ build/
 server/database/*.db
 !server/database/.gitkeep
 
+# Uploaded files
+server/uploads/
+!server/uploads/.gitkeep
+
 # IDE
 .vscode/
 .idea/
