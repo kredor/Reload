@@ -184,7 +184,7 @@ export default function LoadDetailPage() {
       )}
 
       {/* Performance Information */}
-      {(load.velocity_ms || load.group_size_mm || load.velocity_sd || load.velocity_es || load.tested_date) && (
+      {(load.velocity_ms || load.group_size_mm || load.tested_date) && (
         <div className="bg-white rounded-lg shadow-md p-4 mb-4">
           <h2 className="text-lg font-semibold mb-3">Performance</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -192,18 +192,6 @@ export default function LoadDetailPage() {
               <div>
                 <p className="text-sm text-gray-500">Velocity</p>
                 <p className="font-medium">{load.velocity_ms} m/s</p>
-              </div>
-            )}
-            {load.velocity_sd && (
-              <div>
-                <p className="text-sm text-gray-500">Velocity SD</p>
-                <p className="font-medium">{load.velocity_sd}</p>
-              </div>
-            )}
-            {load.velocity_es && (
-              <div>
-                <p className="text-sm text-gray-500">Velocity ES</p>
-                <p className="font-medium">{load.velocity_es}</p>
               </div>
             )}
             {load.group_size_mm && (
@@ -243,6 +231,12 @@ export default function LoadDetailPage() {
           className="flex-1 py-3 px-6 bg-primary-600 text-white rounded-md font-medium hover:bg-primary-700 transition-colors"
         >
           Edit
+        </button>
+        <button
+          onClick={() => navigate('/add', { state: { template: load } })}
+          className="py-3 px-6 border border-primary-300 text-primary-600 rounded-md font-medium hover:bg-primary-50 transition-colors"
+        >
+          Duplicate
         </button>
         <button
           onClick={handleDelete}

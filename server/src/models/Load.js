@@ -107,8 +107,8 @@ class Load {
                 notes, source,
                 loading_date, cartridges_loaded, group_photo_path, batch_number,
                 tested_date, temperature_celsius, humidity_percent,
-                barrel_length_inches, twist_rate, velocity_sd, velocity_es
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                barrel_length_inches, twist_rate
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `);
 
         const result = stmt.run(
@@ -138,9 +138,7 @@ class Load {
             data.temperature_celsius || null,
             data.humidity_percent || null,
             data.barrel_length_inches || null,
-            data.twist_rate || null,
-            data.velocity_sd || null,
-            data.velocity_es || null
+            data.twist_rate || null
         );
 
         return this.getById(result.lastInsertRowid);
@@ -177,9 +175,7 @@ class Load {
                 temperature_celsius = ?,
                 humidity_percent = ?,
                 barrel_length_inches = ?,
-                twist_rate = ?,
-                velocity_sd = ?,
-                velocity_es = ?
+                twist_rate = ?
             WHERE id = ?
         `);
 
@@ -210,8 +206,6 @@ class Load {
             data.humidity_percent || null,
             data.barrel_length_inches || null,
             data.twist_rate || null,
-            data.velocity_sd || null,
-            data.velocity_es || null,
             id
         );
 

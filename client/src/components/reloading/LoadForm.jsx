@@ -308,42 +308,16 @@ export default function LoadForm({ initialData, onSubmit, isSubmitting }) {
                     </div>
                 </div>
 
-                {/* Advanced Performance Data */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Velocity SD
-                        </label>
-                        <input
-                            type="number"
-                            step="0.1"
-                            {...register('velocity_sd', { valueAsNumber: true })}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                            placeholder="Standard deviation"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Velocity ES
-                        </label>
-                        <input
-                            type="number"
-                            step="0.1"
-                            {...register('velocity_es', { valueAsNumber: true })}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                            placeholder="Extreme spread"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Test Date
-                        </label>
-                        <input
-                            type="date"
-                            {...register('tested_date')}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                        />
-                    </div>
+                {/* Test Date */}
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Test Date
+                    </label>
+                    <input
+                        type="date"
+                        {...register('tested_date')}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    />
                 </div>
             </div>
 

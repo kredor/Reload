@@ -104,22 +104,13 @@ export default function ImageUpload({
                         ref={fileInputRef}
                         type="file"
                         accept="image/jpeg,image/jpg,image/png"
+                        capture="environment"
                         onChange={handleFileChange}
                         disabled={disabled}
                         className="hidden"
                     />
 
-                    {!preview && !disabled && (
-                        <button
-                            type="button"
-                            onClick={handleClick}
-                            className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
-                        >
-                            Choose File
-                        </button>
-                    )}
-
-                    <p className="text-xs text-gray-500 mt-2">
+                    <p className="text-xs text-gray-500">
                         JPG or PNG, max {maxSize}MB
                     </p>
                 </div>

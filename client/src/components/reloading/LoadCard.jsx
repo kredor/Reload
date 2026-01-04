@@ -102,7 +102,7 @@ export default function LoadCard({ load }) {
       </div>
 
       {/* Performance */}
-      {(load.velocity_ms || load.group_size_mm || load.velocity_sd || load.velocity_es) && (
+      {(load.velocity_ms || load.group_size_mm || load.tested_date) && (
         <div className="border-t pt-2 mb-3">
           <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
             {load.velocity_ms && (
@@ -111,18 +111,6 @@ export default function LoadCard({ load }) {
                 {load.velocity_ms} m/s
               </span>
             )}
-            {load.velocity_sd && (
-              <span className="text-gray-600">
-                SD: {load.velocity_sd}
-              </span>
-            )}
-            {load.velocity_es && (
-              <span className="text-gray-600">
-                ES: {load.velocity_es}
-              </span>
-            )}
-          </div>
-          <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm mt-1">
             {load.group_size_mm && load.distance_meters && (
               <span className="flex items-center">
                 <span className="mr-1">📏</span>
@@ -152,6 +140,15 @@ export default function LoadCard({ load }) {
           className="flex-1 py-2 px-4 bg-primary-500 text-white rounded-md font-medium hover:bg-primary-600 transition-colors"
         >
           Edit
+        </button>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate('/add', { state: { template: load } });
+          }}
+          className="py-2 px-4 border border-primary-300 text-primary-600 rounded-md font-medium hover:bg-primary-50 transition-colors"
+        >
+          Duplicate
         </button>
         <button
           onClick={handleDelete}
