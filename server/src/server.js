@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import dotenv from 'dotenv';
 import multer from 'multer';
 import loadsRouter from './routes/loads.js';
+import importRouter from './routes/import.js';
 import { getUploadDir } from './config/upload.js';
 
 // Load environment variables
@@ -29,6 +30,7 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/api/loads', loadsRouter);
+app.use('/api/import', importRouter);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

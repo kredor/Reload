@@ -5,10 +5,18 @@ export const getAllLoads = (req, res) => {
     try {
         const filters = {
             caliber: req.query.caliber,
+            bullet_manufacturer: req.query.bullet_manufacturer,
+            bullet_type: req.query.bullet_type,
+            bullet_weight_grains: req.query.bullet_weight_grains,
             bullet_weight_min: req.query.bullet_weight_min,
             bullet_weight_max: req.query.bullet_weight_max,
+            powder_manufacturer: req.query.powder_manufacturer,
             powder_type: req.query.powder_type,
+            charge_weight_grains: req.query.charge_weight_grains,
+            velocity_ms: req.query.velocity_ms,
+            total_cartridge_length_mm: req.query.total_cartridge_length_mm,
             source: req.query.source,
+            my_collection: req.query.my_collection === 'true',
             search: req.query.search,
             sort_field: req.query.sort_field,
             sort_order: req.query.sort_order,
@@ -188,5 +196,70 @@ export const getPowderTypePresets = (req, res) => {
     } catch (error) {
         console.error('Error fetching powder type presets:', error);
         res.status(500).json({ error: 'Failed to fetch powder type presets' });
+    }
+};
+
+// Get distinct values for a column (for advanced filtering)
+export const getDistinctValues = (req, res) => {
+    try {
+        const { column } = req.params;
+
+        if (!column) {
+            return res.status(400).json({ error: 'Column parameter is required' });
+        }
+
+        const values = Load.getDistinctValues(column);
+        res.json(values);
+    } catch (error) {
+        console.error('Error fetching distinct values:', error);
+
+        // Return more specific error for invalid column
+        if (error.message.includes('not allowed')) {
+            return res.status(400).json({ error: error.message });
+        }
+
+        res.status(500).json({ error: 'Failed to fetch distinct values' });
+    }
+};
+
+// Toggle collection status for a load
+export const toggleCollection = (req, res) => {
+    try {
+        const load = Load.toggleCollection(req.params.id);
+        if (!load) {
+            return res.status(404).json({ error: 'Load not found' });
+        }
+        res.json(load);
+    } catch (error) {
+        console.error('Error toggling collection status:', error);
+        res.status(500).json({ error: 'Failed to toggle collection status' });
+    }
+};
+
+// Add load to my collection
+export const addToCollection = (req, res) => {
+    try {
+        const load = Load.addToCollection(req.params.id);
+        if (!load) {
+            return res.status(404).json({ error: 'Load not found' });
+        }
+        res.json(load);
+    } catch (error) {
+        console.error('Error adding to collection:', error);
+        res.status(500).json({ error: 'Failed to add to collection' });
+    }
+};
+
+// Remove load from my collection
+export const removeFromCollection = (req, res) => {
+    try {
+        const load = Load.removeFromCollection(req.params.id);
+        if (!load) {
+            return res.status(404).json({ error: 'Load not found' });
+        }
+        res.json(load);
+    } catch (error) {
+        console.error('Error removing from collection:', error);
+        res.status(500).json({ error: 'Failed to remove from collection' });
     }
 };

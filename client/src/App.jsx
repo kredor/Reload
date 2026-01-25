@@ -5,6 +5,7 @@ import BrowsePage from './pages/BrowsePage';
 import AddLoadPage from './pages/AddLoadPage';
 import LoadDetailPage from './pages/LoadDetailPage';
 import ImportPage from './pages/ImportPage';
+import DatabasePage from './pages/DatabasePage';
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
           <Route path="/load/:id" element={<LoadDetailPage />} />
           <Route path="/edit/:id" element={<AddLoadPage />} />
           <Route path="/import" element={<ImportPage />} />
+          <Route path="/database" element={<DatabasePage />} />
         </Routes>
       </main>
     </div>

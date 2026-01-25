@@ -6,6 +6,7 @@ export default function Navigation() {
   const navItems = [
     { path: '/', label: 'Browse', icon: '📋' },
     { path: '/add', label: 'Add Load', icon: '➕' },
+    { path: '/database', label: 'Database', icon: '🗄️' },
     { path: '/import', label: 'Import', icon: '📥' },
   ];
 

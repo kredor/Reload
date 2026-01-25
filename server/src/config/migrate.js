@@ -9,12 +9,24 @@ const __dirname = dirname(__filename);
 console.log('Running database migrations...');
 
 try {
-    // Read and execute migration file
-    const migrationPath = join(__dirname, '../../database/migrations/001_initial_schema.sql');
-    const migration = fs.readFileSync(migrationPath, 'utf8');
+    const migrationsDir = join(__dirname, '../../database/migrations');
 
-    db.exec(migration);
-    console.log('✓ Schema created successfully');
+    // Get all migration files and sort them
+    const migrationFiles = fs.readdirSync(migrationsDir)
+        .filter(file => file.endsWith('.sql'))
+        .sort();
+
+    console.log(`Found ${migrationFiles.length} migration(s)\n`);
+
+    // Run each migration
+    migrationFiles.forEach(file => {
+        const migrationPath = join(migrationsDir, file);
+        const migration = fs.readFileSync(migrationPath, 'utf8');
+
+        console.log(`Running: ${file}...`);
+        db.exec(migration);
+        console.log(`✓ ${file} completed\n`);
+    });
 
     // Optionally seed with sample data
     const seedPath = join(__dirname, '../../database/seeds/sample_data.sql');

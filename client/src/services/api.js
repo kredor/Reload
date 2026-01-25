@@ -44,6 +44,11 @@ export const loadsAPI = {
 
   // Get filter options
   getFilters: () => api.get('/loads/filters').then(res => res.data),
+
+  // Collection management
+  toggleCollection: (id) => api.post(`/loads/${id}/collection/toggle`).then(res => res.data),
+  addToCollection: (id) => api.post(`/loads/${id}/collection/add`).then(res => res.data),
+  removeFromCollection: (id) => api.post(`/loads/${id}/collection/remove`).then(res => res.data),
 };
 
 export default api;
