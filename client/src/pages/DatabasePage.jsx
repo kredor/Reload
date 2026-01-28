@@ -157,8 +157,68 @@ export default function DatabasePage() {
         </div>
       )}
 
-      {/* Data Table */}
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      {/* Mobile Card View */}
+      <div className="md:hidden space-y-3">
+        {isLoading ? (
+          <div className="bg-white rounded-lg shadow-md p-8 text-center text-gray-500">
+            Loading database...
+          </div>
+        ) : data?.loads && data.loads.length > 0 ? (
+          data.loads.map((load) => (
+            <div key={load.id} className="bg-white rounded-lg shadow-md p-4">
+              <div className="flex justify-between items-start mb-3">
+                <h3 className="text-lg font-semibold text-gray-900">{load.caliber}</h3>
+                <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                  {load.source}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 text-sm mb-4">
+                <div>
+                  <div className="text-gray-500 text-xs uppercase">Bullet</div>
+                  <div className="font-medium">{load.bullet_manufacturer}</div>
+                  <div className="text-gray-600">{load.bullet_type}</div>
+                  <div className="text-gray-600">{load.bullet_weight_grains} gr</div>
+                </div>
+                <div>
+                  <div className="text-gray-500 text-xs uppercase">Powder</div>
+                  <div className="font-medium">{load.powder_manufacturer}</div>
+                  <div className="text-gray-600">{load.powder_type}</div>
+                  <div className="text-gray-600">{load.charge_weight_grains} gr</div>
+                </div>
+              </div>
+
+              <div className="flex justify-between items-center pt-3 border-t border-gray-100">
+                <div className="text-sm">
+                  {load.velocity_ms && (
+                    <span className="text-gray-700">
+                      <span className="text-gray-500">Velocity:</span> {load.velocity_ms} m/s
+                    </span>
+                  )}
+                  {load.total_cartridge_length_mm && (
+                    <span className="text-gray-700 ml-4">
+                      <span className="text-gray-500">OAL:</span> {load.total_cartridge_length_mm} mm
+                    </span>
+                  )}
+                </div>
+                <button
+                  onClick={() => handleUseAsTemplate(load)}
+                  className="px-3 py-2 bg-primary-600 text-white text-sm font-medium rounded-md hover:bg-primary-700 transition-colors"
+                >
+                  Use as Template
+                </button>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="bg-white rounded-lg shadow-md p-8 text-center text-gray-500">
+            No loads found. Import data from the Import page.
+          </div>
+        )}
+      </div>
+
+      {/* Desktop Table View */}
+      <div className="hidden md:block bg-white rounded-lg shadow-md overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
@@ -315,10 +375,6 @@ export default function DatabasePage() {
         </div>
       )}
 
-      {/* Mobile Card View Note */}
-      <div className="mt-4 text-sm text-gray-500 md:hidden">
-        Tip: Rotate your device for better table viewing
-      </div>
     </Container>
   );
 }
